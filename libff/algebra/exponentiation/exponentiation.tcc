@@ -25,14 +25,14 @@ FieldT power(const FieldT &base, const bigint<m> &exponent)
 
     bool found_one = false;
 
-    for (long i = exponent.max_bits() - 1; i >= 0; --i)
+    for (long i = static_cast<long>(exponent.max_bits() - 1); i >= 0; --i)
     {
         if (found_one)
         {
             result = result * result;
         }
 
-        if (exponent.test_bit(i))
+        if (exponent.test_bit(static_cast<size_t>(i)))
         {
             found_one = true;
             result = result * base;

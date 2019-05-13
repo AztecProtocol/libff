@@ -269,7 +269,7 @@ mnt6_G1 mnt6_G1::mixed_add(const mnt6_G1 &other) const
 #endif
     // NOTE: does not handle O and pts of order 2,4
     // http://www.hyperelliptic.org/EFD/g1p/auto-shortw-projective.html#addition-add-1998-cmo-2
-    //assert(other.Z == mnt6_Fq::one());
+    //ASSERT(other.Z == mnt6_Fq::one());
 
     if (this->is_zero())
     {
@@ -282,7 +282,7 @@ mnt6_G1 mnt6_G1::mixed_add(const mnt6_G1 &other) const
     }
 
 #ifdef DEBUG
-    assert(other.is_special());
+    ASSERT(other.is_special());
 #endif
 
     const mnt6_Fq &X1Z2 = (this->X_);                    // X1Z2 = X1*Z2 (but other is special and not zero)

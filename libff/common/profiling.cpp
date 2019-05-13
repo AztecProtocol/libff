@@ -11,7 +11,6 @@
  * @copyright  MIT license (see LICENSE file)
  *****************************************************************************/
 
-#include <cassert>
 #include <chrono>
 #include <cstdio>
 #include <ctime>
@@ -19,6 +18,7 @@
 #include <stdexcept>
 #include <vector>
 
+#include <libff/common/assert.hpp>
 #include <libff/common/default_types/ec_pp.hpp>
 #include <libff/common/profiling.hpp>
 #include <libff/common/utils.hpp>
@@ -287,7 +287,7 @@ void leave_block(const std::string &msg, const bool indent)
     }
 
 #ifndef MULTICORE
-    assert(*(--block_names.end()) == msg);
+    ASSERT(*(--block_names.end()) == msg);
 #endif
     block_names.pop_back();
 
@@ -344,7 +344,7 @@ void print_mem(const std::string &s)
         printf("* Peak vsize (physical memory+swap) in mebibytes (%s): %lu\n", s.c_str(), usage.vsize >> 20);
     }
 #else
-    printf("* Memory profiling not supported in NO_PROCPS mode\n");
+    printf("* Memory profiling not supported in NO_PROCPS mode, cannot analyse %s\n", s.c_str());
 #endif
 }
 

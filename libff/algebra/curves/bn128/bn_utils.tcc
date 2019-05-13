@@ -20,7 +20,7 @@ void bn_batch_invert(std::vector<FieldT> &vec)
 
     for (auto el : vec)
     {
-        assert(!el.isZero());
+        ASSERT(!el.isZero());
         prod.emplace_back(acc);
         FieldT::mul(acc, acc, el);
     }

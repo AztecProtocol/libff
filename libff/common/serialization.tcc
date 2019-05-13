@@ -14,9 +14,9 @@
 #ifndef SERIALIZATION_TCC_
 #define SERIALIZATION_TCC_
 
-#include <cassert>
 #include <sstream>
 
+#include <libff/common/assert.hpp>
 #include <libff/common/utils.hpp>
 
 namespace libff {
@@ -59,7 +59,7 @@ inline void input_bool(std::istream &in, bool &b)
     size_t tmp;
     in >> tmp;
     consume_newline(in);
-    assert(tmp == 0 || tmp == 1);
+    ASSERT(tmp == 0 || tmp == 1);
 
     b = (tmp == 1 ? true : false);
 }
@@ -94,7 +94,7 @@ T reserialize(const T &obj)
     ss << obj;
     T tmp;
     ss >> tmp;
-    assert(obj == tmp);
+    ASSERT(obj == tmp);
     return tmp;
 }
 

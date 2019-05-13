@@ -26,31 +26,31 @@ void test_mixed_add()
     el = GroupT::zero();
     el.to_special();
     result = base.mixed_add(el);
-    assert(result == base + el);
+    ASSERT(result == base + el);
 
     base = GroupT::zero();
     el = GroupT::random_element();
     el.to_special();
     result = base.mixed_add(el);
-    assert(result == base + el);
+    ASSERT(result == base + el);
 
     base = GroupT::random_element();
     el = GroupT::zero();
     el.to_special();
     result = base.mixed_add(el);
-    assert(result == base + el);
+    ASSERT(result == base + el);
 
     base = GroupT::random_element();
     el = GroupT::random_element();
     el.to_special();
     result = base.mixed_add(el);
-    assert(result == base + el);
+    ASSERT(result == base + el);
 
     base = GroupT::random_element();
     el = base;
     el.to_special();
     result = base.mixed_add(el);
-    assert(result == base.dbl());
+    ASSERT(result == base.dbl());
 }
 
 template<typename GroupT>
@@ -61,53 +61,53 @@ void test_group()
     bigint<1> randsum = bigint<1>("121160274");
 
     GroupT zero = GroupT::zero();
-    assert(zero == zero);
+    ASSERT(zero == zero);
     GroupT one = GroupT::one();
-    assert(one == one);
+    ASSERT(one == one);
     GroupT two = bigint<1>(2l) * GroupT::one();
-    assert(two == two);
+    ASSERT(two == two);
     GroupT five = bigint<1>(5l) * GroupT::one();
 
     GroupT three = bigint<1>(3l) * GroupT::one();
     GroupT four = bigint<1>(4l) * GroupT::one();
 
-    assert(two+five == three+four);
+    ASSERT(two+five == three+four);
 
     GroupT a = GroupT::random_element();
     GroupT b = GroupT::random_element();
 
-    assert(one != zero);
-    assert(a != zero);
-    assert(a != one);
+    ASSERT(one != zero);
+    ASSERT(a != zero);
+    ASSERT(a != one);
 
-    assert(b != zero);
-    assert(b != one);
+    ASSERT(b != zero);
+    ASSERT(b != one);
 
-    assert(a.dbl() == a + a);
-    assert(b.dbl() == b + b);
-    assert(one.add(two) == three);
-    assert(two.add(one) == three);
-    assert(a + b == b + a);
-    assert(a - a == zero);
-    assert(a - b == a + (-b));
-    assert(a - b == (-b) + a);
+    ASSERT(a.dbl() == a + a);
+    ASSERT(b.dbl() == b + b);
+    ASSERT(one.add(two) == three);
+    ASSERT(two.add(one) == three);
+    ASSERT(a + b == b + a);
+    ASSERT(a - a == zero);
+    ASSERT(a - b == a + (-b));
+    ASSERT(a - b == (-b) + a);
 
     // handle special cases
-    assert(zero + (-a) == -a);
-    assert(zero - a == -a);
-    assert(a - zero == a);
-    assert(a + zero == a);
-    assert(zero + a == a);
+    ASSERT(zero + (-a) == -a);
+    ASSERT(zero - a == -a);
+    ASSERT(a - zero == a);
+    ASSERT(a + zero == a);
+    ASSERT(zero + a == a);
 
-    assert((a + b).dbl() == (a + b) + (b + a));
-    assert(bigint<1>("2") * (a + b) == (a + b) + (b + a));
+    ASSERT((a + b).dbl() == (a + b) + (b + a));
+    ASSERT(bigint<1>("2") * (a + b) == (a + b) + (b + a));
 
-    assert((rand1 * a) + (rand2 * a) == (randsum * a));
+    ASSERT((rand1 * a) + (rand2 * a) == (randsum * a));
 
-    assert(GroupT::order() * a == zero);
-    assert(GroupT::order() * one == zero);
-    assert((GroupT::order() * a) - a != zero);
-    assert((GroupT::order() * one) - one != zero);
+    ASSERT(GroupT::order() * a == zero);
+    ASSERT(GroupT::order() * one == zero);
+    ASSERT((GroupT::order() * a) - a != zero);
+    ASSERT((GroupT::order() * one) - one != zero);
 
     test_mixed_add<GroupT>();
 }
@@ -116,7 +116,7 @@ template<typename GroupT>
 void test_mul_by_q()
 {
     GroupT a = GroupT::random_element();
-    assert((GroupT::base_field_char()*a) == a.mul_by_q());
+    ASSERT((GroupT::base_field_char()*a) == a.mul_by_q());
 }
 
 template<typename GroupT>
@@ -130,7 +130,7 @@ void test_output()
         ss << g;
         GroupT gg;
         ss >> gg;
-        assert(g == gg);
+        ASSERT(g == gg);
         /* use a random point in next iteration */
         g = GroupT::random_element();
     }

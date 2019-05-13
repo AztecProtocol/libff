@@ -10,7 +10,6 @@
 #ifndef UTILS_HPP_
 #define UTILS_HPP_
 
-#include <cassert>
 #include <iostream>
 #include <sstream>
 #include <string>

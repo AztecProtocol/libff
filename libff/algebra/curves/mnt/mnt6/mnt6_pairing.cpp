@@ -11,13 +11,13 @@
  * @copyright  MIT license (see LICENSE file)
  *****************************************************************************/
 
-#include <cassert>
 
 #include <libff/algebra/curves/mnt/mnt6/mnt6_g1.hpp>
 #include <libff/algebra/curves/mnt/mnt6/mnt6_g2.hpp>
 #include <libff/algebra/curves/mnt/mnt6/mnt6_init.hpp>
 #include <libff/algebra/curves/mnt/mnt6/mnt6_pairing.hpp>
 #include <libff/algebra/scalar_multiplication/wnaf.hpp>
+#include <libff/common/assert.hpp>
 #include <libff/common/profiling.hpp>
 
 namespace libff {
@@ -263,12 +263,12 @@ mnt6_affine_ate_G2_precomputation mnt6_affine_ate_precompute_G2(const mnt6_G2& Q
     bool found_nonzero = false;
 
     std::vector<long> NAF = find_wnaf(1, loop_count);
-    for (long i = NAF.size() - 1; i >= 0; --i)
+    for (long i = static_cast<long>(NAF.size() - 1); i >= 0; --i)
     {
         if (!found_nonzero)
         {
             /* this skips the MSB itself */
-            found_nonzero |= (NAF[i] != 0);
+            found_nonzero |= (NAF[static_cast<size_t>(i)] != 0);
             continue;
         }
 
@@ -284,12 +284,12 @@ mnt6_affine_ate_G2_precomputation mnt6_affine_ate_precompute_G2(const mnt6_G2& Q
         RX = c.gamma.squared() - (c.old_RX+c.old_RX);
         RY = c.gamma * (c.old_RX - RX) - c.old_RY;
 
-        if (NAF[i] != 0)
+        if (NAF[static_cast<size_t>(i)] != 0)
         {
             mnt6_affine_ate_coeffs c;
             c.old_RX = RX;
             c.old_RY = RY;
-            if (NAF[i] > 0)
+            if (NAF[static_cast<size_t>(i)] > 0)
             {
                 c.gamma = (c.old_RY - result.QY) * (c.old_RX - result.QX).inverse();
             }
@@ -337,12 +337,12 @@ mnt6_Fq6 mnt6_affine_ate_miller_loop(const mnt6_affine_ate_G1_precomputation &pr
     size_t idx = 0;
 
     std::vector<long> NAF = find_wnaf(1, loop_count);
-    for (long i = NAF.size() - 1; i >= 0; --i)
+    for (long i = static_cast<long>(NAF.size() - 1); i >= 0; --i)
     {
         if (!found_nonzero)
         {
             /* this skips the MSB itself */
-            found_nonzero |= (NAF[i] != 0);
+            found_nonzero |= (NAF[static_cast<size_t>(i)] != 0);
             continue;
         }
 
@@ -355,11 +355,11 @@ mnt6_Fq6 mnt6_affine_ate_miller_loop(const mnt6_affine_ate_G1_precomputation &pr
                                       - prec_P.PX * c.gamma_twist + c.gamma_X - c.old_RY);
         f = f.squared().mul_by_2345(g_RR_at_P);
 
-        if (NAF[i] != 0)
+        if (NAF[static_cast<size_t>(i)] != 0)
         {
             mnt6_affine_ate_coeffs c = prec_Q.coeffs[idx++];
             mnt6_Fq6 g_RQ_at_P;
-            if (NAF[i] > 0)
+            if (NAF[static_cast<size_t>(i)] > 0)
             {
                 g_RQ_at_P = mnt6_Fq6(prec_P.PY_twist_squared,
                                      - prec_P.PX * c.gamma_twist + c.gamma_X - prec_Q.QY);
@@ -409,7 +409,7 @@ struct extended_mnt6_G2_projective {
 
     void test_invariant() const
     {
-        assert(T == Z.squared());
+        ASSERT(T == Z.squared());
     }
 };
 
@@ -510,9 +510,9 @@ mnt6_ate_G2_precomp mnt6_ate_precompute_G2(const mnt6_G2& Q)
 
     const bigint<mnt6_Fr::num_limbs> &loop_count = mnt6_ate_loop_count;
     bool found_one = false;
-    for (long i = loop_count.max_bits() - 1; i >= 0; --i)
+    for (long i = static_cast<long>(loop_count.max_bits() - 1); i >= 0; --i)
     {
-        const bool bit = loop_count.test_bit(i);
+        const bool bit = loop_count.test_bit(static_cast<size_t>(i));
 
         if (!found_one)
         {
@@ -565,9 +565,9 @@ mnt6_Fq6 mnt6_ate_miller_loop(const mnt6_ate_G1_precomp &prec_P,
 
     const bigint<mnt6_Fr::num_limbs> &loop_count = mnt6_ate_loop_count;
 
-    for (long i = loop_count.max_bits() - 1; i >= 0; --i)
+    for (long i = static_cast<long>(loop_count.max_bits() - 1); i >= 0; --i)
     {
-        const bool bit = loop_count.test_bit(i);
+        const bool bit = loop_count.test_bit(static_cast<size_t>(i));
 
         if (!found_one)
         {
@@ -626,9 +626,9 @@ mnt6_Fq6 mnt6_ate_double_miller_loop(const mnt6_ate_G1_precomp &prec_P1,
 
     const bigint<mnt6_Fr::num_limbs> &loop_count = mnt6_ate_loop_count;
 
-    for (long i = loop_count.max_bits() - 1; i >= 0; --i)
+    for (long i = static_cast<long>(loop_count.max_bits() - 1); i >= 0; --i)
     {
-        const bool bit = loop_count.test_bit(i);
+        const bool bit = loop_count.test_bit(static_cast<size_t>(i));
 
         if (!found_one)
         {

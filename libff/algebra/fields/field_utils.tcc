@@ -78,7 +78,7 @@ std::vector<FieldT> pack_int_vector_into_field_element_vector(const std::vector<
 template<typename FieldT>
 std::vector<FieldT> pack_bit_vector_into_field_element_vector(const bit_vector &v, const size_t chunk_bits)
 {
-    assert(chunk_bits <= FieldT::capacity());
+    ASSERT(chunk_bits <= FieldT::capacity());
 
     const size_t repacked_size = div_ceil(v.size(), chunk_bits);
     std::vector<FieldT> result(repacked_size);
@@ -156,7 +156,7 @@ bit_vector convert_field_element_to_bit_vector(const FieldT &el, const size_t bi
 template<typename FieldT>
 FieldT convert_bit_vector_to_field_element(const bit_vector &v)
 {
-    assert(v.size() <= FieldT::size_in_bits());
+    ASSERT(v.size() <= FieldT::size_in_bits());
 
     FieldT res = FieldT::zero();
     FieldT c = FieldT::one();
@@ -178,7 +178,7 @@ void batch_invert(std::vector<FieldT> &vec)
 
     for (auto el : vec)
     {
-        assert(!el.is_zero());
+        ASSERT(!el.is_zero());
         prod.emplace_back(acc);
         acc = acc * el;
     }
@@ -187,8 +187,8 @@ void batch_invert(std::vector<FieldT> &vec)
 
     for (long i = static_cast<long>(vec.size()-1); i >= 0; --i)
     {
-        const FieldT old_el = vec[i];
-        vec[i] = acc_inverse * prod[i];
+        const FieldT old_el = vec[static_cast<size_t>(i)];
+        vec[static_cast<size_t>(i)] = acc_inverse * prod[static_cast<size_t>(i)];
         acc_inverse = acc_inverse * old_el;
     }
 }

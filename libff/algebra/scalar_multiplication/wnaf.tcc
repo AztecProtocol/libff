@@ -24,13 +24,13 @@ std::vector<long> find_wnaf(const size_t window_size, const bigint<n> &scalar)
     const size_t length = scalar.max_bits(); // upper bound
     std::vector<long> res(length+1);
     bigint<n> c = scalar;
-    long j = 0;
+    size_t j = 0;
     while (!c.is_zero())
     {
         long u;
         if ((c.data[0] & 1) == 1)
         {
-            u = c.data[0] % (1u << (window_size+1));
+            u = (long)(c.data[0] % (1u << (window_size+1)));
             if (u > (1 << window_size))
             {
                 u = u - (1 << (window_size+1));
@@ -38,11 +38,11 @@ std::vector<long> find_wnaf(const size_t window_size, const bigint<n> &scalar)
 
             if (u > 0)
             {
-                mpn_sub_1(c.data, c.data, n, u);
+                mpn_sub_1(c.data, c.data, n, (size_t)(u));
             }
             else
             {
-                mpn_add_1(c.data, c.data, n, -u);
+                mpn_add_1(c.data, c.data, n, (size_t)(-u));
             }
         }
         else
@@ -73,23 +73,23 @@ T fixed_window_wnaf_exp(const size_t window_size, const T &base, const bigint<n>
 
     T res = T::zero();
     bool found_nonzero = false;
-    for (long i = naf.size()-1; i >= 0; --i)
+    for (long i = static_cast<long>(naf.size() - 1); i >= 0; --i)
     {
         if (found_nonzero)
         {
             res = res.dbl();
-        }
+        }   
 
-        if (naf[i] != 0)
+        if (naf[static_cast<size_t>(i)] != 0)
         {
             found_nonzero = true;
-            if (naf[i] > 0)
+            if (naf[static_cast<size_t>(i)] > 0)
             {
-                res = res + table[naf[i]/2];
+                res = res + table[naf[static_cast<size_t>(i)]/2];
             }
             else
             {
-                res = res - table[(-naf[i])/2];
+                res = res - table[(-naf[static_cast<size_t>(i)])/2];
             }
         }
     }

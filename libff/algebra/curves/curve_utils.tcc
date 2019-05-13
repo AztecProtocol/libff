@@ -23,7 +23,7 @@ GroupT scalar_mul(const GroupT &base, const bigint<m> &scalar)
             result = result.dbl();
         }
 
-        if (scalar.test_bit(i))
+        if (scalar.test_bit(static_cast<size_t>(i)))
         {
             found_one = true;
             result = result + base;
